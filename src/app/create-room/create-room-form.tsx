@@ -25,7 +25,7 @@ const formSchema = z.object({
 });
 
 export function CreateRoomForm() {
-    const router = useRouter();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +52,7 @@ export function CreateRoomForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="title"/>
+                <Input {...field} placeholder="title" />
               </FormControl>
               <FormDescription>This is your public room name.</FormDescription>
               <FormMessage />
@@ -67,7 +67,7 @@ export function CreateRoomForm() {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="describe your project"/>
+                <Input {...field} placeholder="describe your project" />
               </FormControl>
               <FormDescription>
                 Please describe what you are be coding on.
@@ -77,14 +77,17 @@ export function CreateRoomForm() {
           )}
         />
 
-<FormField
+        <FormField
           control={form.control}
           name="githubRepo"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Github Repo</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="https://github.com/[username]/[repo-name]"/>
+                <Input
+                  {...field}
+                  placeholder="https://github.com/[username]/[repo-name]"
+                />
               </FormControl>
               <FormDescription>
                 Please put a link to the project you are working on.
@@ -94,17 +97,18 @@ export function CreateRoomForm() {
           )}
         />
 
-<FormField
+        <FormField
           control={form.control}
           name="tags"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tags</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="typescript, nextjs, tailwind"/>
+                <Input {...field} placeholder="typescript, nextjs, tailwind" />
               </FormControl>
               <FormDescription>
-                List your programming languages, frameworks, libraries so pople can find your content
+                List your programming languages, frameworks, libraries so pople
+                can find your content
               </FormDescription>
               <FormMessage />
             </FormItem>

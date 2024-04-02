@@ -16,14 +16,13 @@ import Link from "next/link";
 
 function AccountDropdown() {
   const session = useSession();
-  const isLoggedIn = !!session.data;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant={"link"}>
           <Avatar className="mr-2">
-            <AvatarImage src={session.data?.user?.image ??""} />
+            <AvatarImage src={session.data?.user?.image ?? ""} />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
 
@@ -31,39 +30,39 @@ function AccountDropdown() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {isLoggedIn ? (
-          <DropdownMenuItem onClick={() => signOut()}>
-            <LogOutIcon className="mr-2" /> Sign Out
-          </DropdownMenuItem>
-        ) : (
-          <DropdownMenuItem onClick={() => signIn("google")}>
-            <LogInIcon className="mr-2" /> Sign In
-          </DropdownMenuItem>
-        )}
+        <DropdownMenuItem
+          onClick={() =>
+            signOut({
+              callbackUrl: "/",
+            })
+          }
+        >
+          <LogOutIcon className="mr-2" /> Sign Out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
 
 export function Header() {
+  const session = useSession();
   return (
     <header className="bg-gray-100 dark:bg-gray-900 container mx-auto py-2">
       <div className="flex justify-between items-center">
         <div>
           <Link href="/" className="flex gap-2 items-center text-xl">
-          <Image 
-          src="/icon.png"
-          width="50"
-          height="50"
-          alt="logo-image"
-
-          />
-          Dev Connect
+            <Image src="/icon.png" width="50" height="50" alt="logo-image" />
+            Dev Connect
           </Link>
         </div>
 
         <div className="flex items-center gap-4">
-          <AccountDropdown />
+          {session.data && <AccountDropdown />}
+          {!session.data && (
+            <Button onClick={() => signIn()} variant="link">
+              <LogInIcon className="mr-2" /> Sign In
+            </Button>
+          )}
           <ModeToggle />
         </div>
       </div>
