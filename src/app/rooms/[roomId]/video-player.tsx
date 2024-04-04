@@ -46,9 +46,10 @@ export function DevConnectVideo({ room }: { room: Room }) {
     setCall(call);
 
     return () => {
-      call
-        .leave()
-        .then(() => client.disconnectUser())
+      call.camera.disable()
+        .then(() => {
+          client.disconnectUser();
+        })
         .catch(console.error);
     };
   }, [session, room]);
