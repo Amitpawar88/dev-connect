@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { editRoomAction } from "./actions";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Room } from "@/db/schema";
 import { toast } from "@/components/ui/use-toast";
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -28,6 +29,7 @@ const formSchema = z.object({
 
 export function EditRoomForm({ room }: { room: Room }) {
   const params = useParams();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,7 +41,11 @@ export function EditRoomForm({ room }: { room: Room }) {
     },
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  // const [isEdited, setIsEdited] = useState(false);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
     await editRoomAction({
       id: params.roomId as string,
       ...values,
@@ -48,7 +54,15 @@ export function EditRoomForm({ room }: { room: Room }) {
       title: "Room Updated",
       description: "Your room was successfully Updated",
     })
+
+    setIsSubmitting(false);
+    // setIsEdited(true);
+    // router.push("/my-rooms?edited=true");
+    router.push("/my-rooms");
   }
+
+  useEffect(() => {
+  }, [isSubmitting, form, /* isEdited */]);
 
   return (
     <Form {...form}>
@@ -123,7 +137,7 @@ export function EditRoomForm({ room }: { room: Room }) {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isSubmitting}>Submit</Button>
       </form>
     </Form>
   );
